@@ -10,20 +10,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#16A34A; --green2:#22C55E; --amber:#FACC15; --red:#EF4444;
-  --bg:#ffffff; --bg-soft:#F0FDF4; --bg-card:rgba(255,255,255,.72);
-  --ink:#14201a; --ink-soft:#4b5f54; --line:rgba(22,163,74,.16);
-  --glass:rgba(255,255,255,.6); --shadow:0 20px 50px -20px rgba(22,163,74,.25);
+  --green:#15794A; --green2:#3AA871; --amber:#E29A3C; --red:#D4593C;
+  --bg:#F5F0E4; --bg-soft:#ECEFDE; --bg-card:rgba(252,249,241,.72);
+  --ink:#2E3F34; --ink-soft:#6B7A6E; --line:rgba(21,121,74,.14);
+  --glass:rgba(250,246,238,.62); --shadow:0 22px 52px -26px rgba(21,121,74,.22);
   --radius:22px;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
 [data-theme="dark"]{
-  --bg:#0f1512; --bg-soft:#131c17; --bg-card:rgba(23,33,27,.8);
-  --ink:#e8f3ec; --ink-soft:#9db4a7; --line:rgba(34,197,94,.22);
-  --glass:rgba(19,28,23,.65); --shadow:0 20px 50px -20px rgba(0,0,0,.6);
+  --green:#2FB673; --green2:#4ECe8f; --amber:#F5A524; --red:#F0714E;
+  --bg:#0C120E; --bg-soft:#101911; --bg-card:rgba(23,32,25,.82);
+  --ink:#EDF5EE; --ink-soft:#9EB3A3; --line:rgba(47,182,115,.2);
+  --glass:rgba(16,24,18,.68); --shadow:0 24px 60px -24px rgba(0,0,0,.65);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden;transition:background .4s,color .4s}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2000;opacity:.032;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E")}
+[data-theme="dark"] body::after{opacity:.09;mix-blend-mode:screen}
 h1,h2,h3,.display{font-family:'Fraunces',serif;line-height:1.12;letter-spacing:-.015em}
 img,svg{max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -54,12 +59,13 @@ nav{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:min(1140px
 
 /* hero */
 header{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;
-  background:radial-gradient(1200px 600px at 70% -10%,rgba(34,197,94,.18),transparent 60%),
-             radial-gradient(900px 500px at 10% 110%,rgba(250,204,21,.14),transparent 60%),var(--bg)}
+  background:radial-gradient(1200px 620px at 72% -12%,rgba(58,168,113,.15),transparent 60%),
+             radial-gradient(900px 520px at 6% 112%,rgba(226,154,60,.11),transparent 60%),
+             radial-gradient(700px 400px at 50% 55%,rgba(21,121,74,.045),transparent 70%),var(--bg)}
 #particles{position:absolute;inset:0;pointer-events:none}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:drift 16s ease-in-out infinite alternate;pointer-events:none}
-.blob.b1{width:420px;height:420px;background:rgba(34,197,94,.35);top:-120px;left:-120px}
-.blob.b2{width:360px;height:360px;background:rgba(250,204,21,.3);bottom:-100px;right:-80px;animation-delay:-6s}
+.blob.b1{width:440px;height:440px;background:rgba(58,168,113,.28);top:-130px;left:-130px}
+.blob.b2{width:380px;height:380px;background:rgba(226,154,60,.22);bottom:-110px;right:-90px;animation-delay:-6s}
 @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.15)}}
 .floatfood{position:absolute;font-size:2.4rem;opacity:.85;animation:floaty 7s ease-in-out infinite;filter:drop-shadow(0 12px 14px rgba(20,32,26,.18));pointer-events:none}
 @keyframes floaty{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-26px) rotate(5deg)}}
@@ -67,17 +73,17 @@ header{min-height:100vh;display:flex;align-items:center;justify-content:center;t
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
   background:rgba(34,197,94,.12);border:1px solid var(--line);padding:8px 16px;border-radius:999px;margin-bottom:22px}
 .hero-inner h1{font-size:clamp(2.6rem,6.5vw,4.6rem);font-weight:600}
-.hero-inner h1 .accent{color:var(--green);font-style:italic}
+.hero-inner h1 .accent{font-style:italic;background:linear-gradient(115deg,var(--green) 20%,var(--green2) 55%,var(--amber) 110%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-inner h1 .line{display:block;overflow:hidden}
-.hero-inner h1 .line span{display:inline-block;transform:translateY(110%);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-inner h1 .line span{display:inline-block;transform:translateY(112%);animation:rise 1.05s var(--ease) forwards}
 .hero-inner h1 .line:nth-child(2) span{animation-delay:.18s}
 @keyframes rise{to{transform:translateY(0)}}
 .sub{margin:20px auto 34px;max-width:520px;color:var(--ink-soft);font-size:1.12rem;opacity:0;animation:fadeup 1s .5s forwards}
 @keyframes fadeup{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(18px)}}
 .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeup 1s .7s forwards}
-.btn{border:none;border-radius:999px;padding:15px 30px;font-weight:700;font-size:.98rem;transition:.3s;position:relative;overflow:hidden;display:inline-block}
-.btn-primary{background:var(--green);color:#fff;box-shadow:0 14px 30px -10px rgba(22,163,74,.55)}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 36px -10px rgba(22,163,74,.6)}
+.btn{border:none;border-radius:999px;padding:15px 30px;font-weight:700;font-size:.98rem;transition:.45s var(--ease);position:relative;overflow:hidden;display:inline-block}
+.btn-primary{background:linear-gradient(120deg,var(--green),var(--green2));color:#fff;box-shadow:0 14px 30px -10px rgba(11,138,75,.5)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 40px -10px rgba(11,138,75,.55)}
 .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
 .btn-ghost:hover{border-color:var(--green);color:var(--green);transform:translateY(-3px)}
 .hero-stats{display:flex;gap:34px;justify-content:center;margin-top:56px;flex-wrap:wrap;opacity:0;animation:fadeup 1s .9s forwards}
@@ -89,24 +95,25 @@ header{min-height:100vh;display:flex;align-items:center;justify-content:center;t
 section{padding:90px 24px;position:relative}
 .wrap{max-width:1120px;margin:0 auto}
 .sec-head{text-align:center;max-width:640px;margin:0 auto 54px}
-.sec-head h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:600;margin:14px 0 12px}
+.sec-head h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:600;margin:14px 0 12px;background:linear-gradient(180deg,var(--ink) 55%,color-mix(in srgb,var(--ink) 62%,var(--green)) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sec-head p{color:var(--ink-soft)}
 .soft{background:var(--bg-soft)}
 
 /* reveal */
-.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal{opacity:0;transform:translateY(30px);filter:blur(9px);transition:opacity .95s var(--ease),transform .95s var(--ease),filter .95s var(--ease)}
 .reveal.left{transform:translateX(-40px)}
 .reveal.right{transform:translateX(40px)}
 .reveal.zoom{transform:scale(.92)}
-.reveal.show{opacity:1;transform:none}
+.reveal.show{opacity:1;transform:none;filter:blur(0)}
 
 /* card grids */
 .grid{display:grid;gap:22px}
 .g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-.card{background:var(--bg-card);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:transform .35s,box-shadow .35s,border-color .35s;position:relative}
-.card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(34,197,94,.4)}
-.card .emoji{font-size:2.2rem;display:inline-block;margin-bottom:14px;transition:transform .35s}
+.card{background:var(--bg-card);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .5s var(--ease);position:relative;box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 1px 2px rgba(46,63,52,.03)}
+[data-theme="dark"] .card{box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.card:hover{transform:translateY(-8px) scale(1.012);box-shadow:var(--shadow);border-color:rgba(47,182,115,.45)}
+.card .emoji{font-size:2.2rem;display:inline-block;margin-bottom:14px;transition:transform .5s var(--ease)}
 .card:hover .emoji{transform:scale(1.18) rotate(-6deg)}
 .card h3{font-size:1.22rem;margin-bottom:8px}
 .card p{color:var(--ink-soft);font-size:.94rem}
@@ -150,7 +157,7 @@ section{padding:90px 24px;position:relative}
 /* myth flip */
 .flip-grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
 .flip{perspective:1200px;height:230px;cursor:pointer}
-.flip-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .85s var(--ease);transform-style:preserve-3d}
 .flip.flipped .flip-inner{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
 .face.front{background:var(--bg-card)}
@@ -167,7 +174,7 @@ section{padding:90px 24px;position:relative}
 .qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--amber));transition:width .5s}
 .qq{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:20px}
 .qopt{display:block;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:11px;font-weight:600;font-size:.95rem;color:var(--ink);transition:.25s}
-.qopt:hover{border-color:var(--green);transform:translateX(6px)}
+.qopt:hover{border-color:var(--green);transform:translateX(6px);transition:.35s var(--ease)}
 .qopt.correct{background:rgba(34,197,94,.18);border-color:var(--green)}
 .qopt.wrong{background:rgba(239,68,68,.15);border-color:var(--red)}
 .qmeta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink-soft);font-weight:700;margin-bottom:8px}
@@ -243,6 +250,24 @@ footer a:hover{color:var(--green)}
 .pulse-map button b{font-size:1rem}
 .pulse-map button span.pv{display:block;font-size:.78rem;color:var(--ink-soft);font-weight:600;margin-top:4px}
 .pulse-map button:hover,.pulse-map button.on{border-color:var(--green);transform:translateY(-4px);box-shadow:var(--shadow)}
+
+
+/* article modal */
+.amodal{position:fixed;inset:0;z-index:1500;display:none;align-items:center;justify-content:center;padding:22px}
+.amodal.open{display:flex}
+.amodal .scrim{position:absolute;inset:0;background:rgba(10,20,14,.55);backdrop-filter:blur(6px);animation:fadeup .3s}
+.amodal .sheet{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:26px;max-width:680px;width:100%;max-height:84vh;overflow-y:auto;padding:40px 38px;box-shadow:var(--shadow);animation:sheetIn .55s var(--ease)}
+@keyframes sheetIn{from{opacity:0;transform:translateY(40px) scale(.96)}to{opacity:1;transform:none}}
+.amodal .aclose{position:sticky;top:0;float:right;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--bg-card);font-size:1.1rem;color:var(--ink);transition:.3s}
+.amodal .aclose:hover{border-color:var(--red);color:var(--red);transform:rotate(90deg)}
+.amodal .bcat{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.amodal h3{font-size:1.7rem;margin:8px 0 4px}
+.amodal .bmeta{font-size:.8rem;color:var(--ink-soft);font-weight:600;margin-bottom:18px}
+.amodal .abody p{color:var(--ink-soft);font-size:.97rem;margin-bottom:14px}
+.amodal .abody b{color:var(--ink)}
+.amodal .abody .callout{background:rgba(47,182,115,.1);border:1px dashed rgba(47,182,115,.45);border-radius:14px;padding:14px 16px;font-size:.9rem;margin:16px 0;color:var(--ink)}
+.blog-card{cursor:pointer}
+.blog-card .readmore{margin-top:10px;font-size:.8rem;font-weight:800;color:var(--green)}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
@@ -625,6 +650,14 @@ footer a:hover{color:var(--green)}
   <div class="copyright">© 2026 SafeThali · An educational initiative · Home tests are screening indicators, not lab-certified results · Privacy · Terms · Disclaimer</div>
 </footer>
 
+<div class="amodal" id="amodal" role="dialog" aria-modal="true">
+  <div class="scrim" id="ascrim"></div>
+  <div class="sheet">
+    <button class="aclose" id="aclose" aria-label="Close article">✕</button>
+    <div id="abody"></div>
+  </div>
+</div>
+
 <button id="topBtn" aria-label="Scroll to top">↑</button>
 
 <script>
@@ -770,15 +803,69 @@ renderQuiz();
 
 /* ---------- blog ---------- */
 const posts=[
- {e:'🥛',c:'Adulteration',t:'The 30-second milk purity test every home should know',x:'Slant-surface, iodine and boil tests explained step by step.',d:'Jun 2026',r:'4 min'},
- {e:'🏷️',c:'Labels',t:'5 tricks brands use on nutrition labels',x:'Serving-size games, hidden sugars and health-halo words.',d:'Jun 2026',r:'5 min'},
- {e:'🌶️',c:'Adulteration',t:'Brick powder in chilli powder: how common is it?',x:'What surveillance data shows and how to check at home.',d:'May 2026',r:'3 min'},
- {e:'🍱',c:'Hygiene',t:'Tiffin safety: keeping packed lunch safe till 2 PM',x:'The danger zone problem and how to pack around it.',d:'May 2026',r:'4 min'},
- {e:'🥦',c:'Nutrition',t:'Millets 101: why they are back on the Indian plate',x:'Nutrition profile, cooking basics and label claims.',d:'May 2026',r:'6 min'},
- {e:'⚖️',c:'Rights',t:'How to file a food complaint that actually gets acted on',x:'Evidence, FSSAI portals and escalation paths.',d:'Apr 2026',r:'5 min'},
- {e:'🍯',c:'Adulteration',t:'Honey fraud: syrup blends and how tests catch them',x:'Why home tests are indicators, and what labs measure.',d:'Apr 2026',r:'5 min'},
- {e:'🧊',c:'Hygiene',t:'Your fridge is a map: what goes where and why',x:'Shelf-by-shelf storage logic that prevents spoilage.',d:'Apr 2026',r:'3 min'},
- {e:'🍬',c:'Nutrition',t:'Added sugar has 15 names. Here they all are',x:'Spotting maltose, dextrose and syrup aliases on packs.',d:'Mar 2026',r:'4 min'}
+ {e:'🥛',c:'Adulteration',t:'The 30-second milk purity test every home should know',x:'Slant-surface, iodine and boil tests explained step by step.',d:'Jun 2026',r:'4 min',
+  body:`<p>Milk is India's most consumed — and most adulterated — food item. The good news: the most common adulterants are also the easiest to catch at home.</p>
+<p><b>Test 1 — The slant test (for added water).</b> Put a single drop of milk on a smooth, slanted surface like a polished steel plate. Pure milk is viscous: it flows slowly and leaves a white trail behind it. Watered-down milk runs off quickly and leaves little or no trail.</p>
+<p><b>Test 2 — The iodine test (for starch).</b> Starch is added to give thin milk fake "body." Boil a small sample, cool it, and add a few drops of tincture of iodine from your first-aid kit. If the milk turns blue, starch is present. Pure milk stays yellowish-brown.</p>
+<p><b>Test 3 — The shake test (for detergent).</b> Take equal parts milk and water in a bottle and shake hard. A dense, soapy lather that persists indicates detergent. Pure milk forms a thin layer of foam that disappears quickly.</p>
+<div class="callout">⚠️ These are screening indicators. If a test fails, stop consuming the milk, keep the sample, and report the seller on FSSAI's Food Safety Connect.</div>
+<p>Make the slant test a weekly 30-second habit — especially if you buy loose milk from a local vendor.</p>`},
+ {e:'🏷️',c:'Labels',t:'5 tricks brands use on nutrition labels',x:'Serving-size games, hidden sugars and health-halo words.',d:'Jun 2026',r:'5 min',
+  body:`<p>Nutrition labels are legally required to be accurate — but there's a lot of room to be accurate <b>and</b> misleading at the same time. Here are the five most common games.</p>
+<p><b>1. The shrinking serving size.</b> A "per serving" column showing just 90 kcal sounds great — until you notice the serving is 20g and the pack is 150g. Always compare using the per-100g column.</p>
+<p><b>2. Sugar under many names.</b> Ingredients are listed by weight, so brands split sugar into maltose, dextrose, corn syrup, invert syrup and fruit juice concentrate. Each ranks lower individually — together they'd often be ingredient #1.</p>
+<p><b>3. Health-halo words.</b> "Natural," "wholesome," "immunity" and "multigrain" have no strict legal definition. "Multigrain" just means more than one grain — usually refined ones.</p>
+<p><b>4. Highlighting the added, hiding the base.</b> "With real fruit!" can mean 2% fruit paste in a sugar-based product. Check the ingredient percentage in brackets.</p>
+<p><b>5. Brown ≠ whole.</b> Brown bread and brown biscuits are often refined flour with caramel colour. The first ingredient should say <b>whole wheat / atta</b>.</p>
+<div class="callout">✅ The 10-second rule: flip the pack, read the first three ingredients and the per-100g sugar. That tells you 90% of the story.</div>`},
+ {e:'🌶️',c:'Adulteration',t:'Brick powder in chilli powder: how common is it?',x:'What surveillance data shows and how to check at home.',d:'May 2026',r:'3 min',
+  body:`<p>Loose chilli powder is one of the most frequently flagged items in state food-safety surveillance drives, and brick powder is the classic adulterant — it matches the colour, adds weight, and costs almost nothing.</p>
+<p><b>Why it's dangerous:</b> brick and sand dust can carry heavy metals and silica. Regular consumption irritates the stomach lining and adds a long-term toxic load. Artificial dyes like Sudan red — occasionally found in loose spice markets — are worse: they're banned industrial colourants.</p>
+<p><b>The water test:</b> sprinkle a teaspoon of chilli powder on a glass of water. Pure chilli floats briefly and sinks slowly, tinting the water lightly. Brick powder sinks fast and settles as a gritty layer — rub the residue between your fingers; grit means brick. Artificial colour streaks downward in bright red trails.</p>
+<div class="callout">🛒 Safest options: buy whole dried red chillies and grind them at home, or choose packaged brands with an FSSAI number and batch code you can trace.</div>
+<p>Apply the same water test to turmeric and any loose ground spice — the pattern of "settle fast + gritty residue" is a universal red flag.</p>`},
+ {e:'🍱',c:'Hygiene',t:'Tiffin safety: keeping packed lunch safe till 2 PM',x:'The danger zone problem and how to pack around it.',d:'May 2026',r:'4 min',
+  body:`<p>A tiffin packed at 7 AM and eaten at 1:30 PM spends over six hours at room temperature — squarely inside the 5–60°C danger zone where bacteria double every 20 minutes. In Indian summers, that's a real food-poisoning risk. Here's how to pack around the problem.</p>
+<p><b>Start hot, pack hot.</b> Food that goes into an insulated tiffin steaming hot (above 60°C) stays out of the danger zone for hours. Lukewarm food packed in a regular box is the worst combination.</p>
+<p><b>Keep wet and dry apart.</b> Moisture is bacteria's best friend. Pack curd, gravies and chutneys in separate leak-proof containers, and keep rotis/rice dry.</p>
+<p><b>Skip the risky items.</b> Cooked rice left at room temperature is a known culprit (Bacillus cereus). For long gaps, prefer rotis, parathas, dry sabzis and whole fruit over rice and dairy-heavy items.</p>
+<p><b>Cool box, cold food.</b> The reverse strategy also works: pack chilled items (curd rice, salads) with a small ice pack so they stay below 5°C.</p>
+<div class="callout">🎒 Rule of thumb: either keep it hot, keep it cold, or keep it dry. Room-temperature + moist + 6 hours is the combination to avoid.</div>`},
+ {e:'🥦',c:'Nutrition',t:'Millets 101: why they are back on the Indian plate',x:'Nutrition profile, cooking basics and label claims.',d:'May 2026',r:'6 min',
+  body:`<p>Jowar, bajra, ragi, foxtail, kodo — millets fed India for centuries before rice and wheat took over, and they're now back for good reasons that go beyond the trend.</p>
+<p><b>The nutrition case.</b> Millets are naturally rich in fibre, minerals and slower-digesting carbohydrates. Ragi is one of the best plant sources of calcium; bajra brings iron and magnesium. Their lower glycemic response makes them a smart swap for people watching blood sugar.</p>
+<p><b>Gluten-free by default.</b> All true millets are gluten-free, which matters for the growing number of people with sensitivity — no special "gluten-free" premium product needed.</p>
+<p><b>Cooking basics.</b> Treat whole millets like rice: rinse, soak 30 minutes, cook in roughly 1:2.5 grain-to-water. Millet flours work best blended with wheat flour (start 30:70) for rotis since they lack gluten's stretch.</p>
+<p><b>Read the label anyway.</b> "Millet" cookies and snacks can contain more refined flour and sugar than millet. Check where millet ranks in the ingredient list — first is honest, fourth is marketing.</p>
+<div class="callout">🌾 Start simple: replace rice with foxtail millet twice a week, or mix ragi flour into your regular atta. Small swaps stick.</div>`},
+ {e:'⚖️',c:'Rights',t:'How to file a food complaint that actually gets acted on',x:'Evidence, FSSAI portals and escalation paths.',d:'Apr 2026',r:'5 min',
+  body:`<p>Most food complaints die because they arrive as an angry message with no evidence. A complaint that gets acted on looks like a small case file. Here's how to build one in ten minutes.</p>
+<p><b>Step 1 — Preserve everything.</b> Keep the product in its packaging. Don't finish it, don't throw the wrapper. Photograph the front of pack, the FSSAI licence number, batch number, manufacturing and expiry dates, and the bill or delivery receipt.</p>
+<p><b>Step 2 — File on the official channel.</b> Use FSSAI's Food Safety Connect app or the online grievance portal. Attach your photos, name the seller and location, and describe the issue factually — "found fungal growth before expiry date" beats "worst product ever."</p>
+<p><b>Step 3 — Note your complaint ID.</b> You'll get a reference number; complaints route to your state's food safety officers.</p>
+<p><b>Step 4 — Escalate if needed.</b> No response? The National Consumer Helpline (1915) and the Consumer Commission under the Consumer Protection Act 2019 are your next stops — your photo evidence works there too.</p>
+<div class="callout">📸 The habit that matters: photograph the label <b>before</b> a problem appears. Once a batch number is in your camera roll, every complaint becomes traceable.</div>`},
+ {e:'🍯',c:'Adulteration',t:'Honey fraud: syrup blends and how tests catch them',x:'Why home tests are indicators, and what labs measure.',d:'Apr 2026',r:'5 min',
+  body:`<p>Honey is among the most faked foods in the world — not by adding something obviously foreign, but by blending in rice or corn syrups that mimic honey's sugar profile almost perfectly.</p>
+<p><b>What home tests can catch.</b> The flame test (a honey-dipped cotton bud should burn) and the water test (pure honey sinks as a compact stream instead of dissolving instantly) catch <b>added moisture and crude dilution</b>. They're worth doing.</p>
+<p><b>What they can't catch.</b> Modern syrup blends are engineered to pass exactly these tests. That's why lab methods exist: NMR profiling and isotope-ratio analysis compare a sample's molecular fingerprint against authentic honey databases. No kitchen can replicate that.</p>
+<p><b>So how do you buy honest honey?</b> Prefer brands that publish batch-level test reports, look for the FSSAI licence and, where available, NMR-tested claims. Raw honey that crystallises over months is a mildly reassuring sign — pure honey crystallises naturally; heavily processed syrup blends often don't.</p>
+<div class="callout">🍯 Bottom line: home tests screen out the crude fakes. For the sophisticated ones, your protection is choosing traceable, tested brands — not the roadside "pure forest honey" bottle with no label.</div>`},
+ {e:'🧊',c:'Hygiene',t:'Your fridge is a map: what goes where and why',x:'Shelf-by-shelf storage logic that prevents spoilage.',d:'Apr 2026',r:'3 min',
+  body:`<p>A fridge isn't one cold box — it's several climate zones, and using them wrong is why food spoils "before its time."</p>
+<p><b>Top and middle shelves (most stable):</b> cooked leftovers, ready-to-eat food, curd, paneer, milk. This is also why milk does <b>not</b> belong in the door.</p>
+<p><b>Bottom shelf (coldest):</b> raw meat and fish, always in sealed containers. Bottom placement isn't just about temperature — it means raw juices can never drip onto ready-to-eat food. That single habit eliminates the most dangerous cross-contamination path in a home kitchen.</p>
+<p><b>Crisper drawers (humid):</b> vegetables and fruit, ideally separated — many fruits release ethylene gas that wilts leafy greens faster.</p>
+<p><b>The door (warmest, temperature swings):</b> condiments, pickles, sauces, juices. Nothing perishable.</p>
+<div class="callout">🧊 Two extra rules: don't overpack (cold air must circulate), and cool hot food for 20–30 minutes before refrigerating — but never leave it out beyond 2 hours.</div>
+<p>Quick reference times: cooked rice 1 day, dal and sabzi 2 days, raw chicken or fish 1–2 days, and reheat any leftover only once.</p>`},
+ {e:'🍬',c:'Nutrition',t:'Added sugar has 15 names. Here they all are',x:'Spotting maltose, dextrose and syrup aliases on packs.',d:'Mar 2026',r:'4 min',
+  body:`<p>Ingredient lists are ordered by weight — so the further down "sugar" appears, the healthier a product looks. The industry's workaround: use several sugars so each ranks low. Here are the names to know.</p>
+<p><b>The -ose family:</b> sucrose, glucose, fructose, maltose, dextrose, lactose (added). Anything ending in -ose is a sugar.</p>
+<p><b>The syrups:</b> corn syrup, high-fructose corn syrup, glucose syrup, invert syrup, rice syrup, malt syrup, golden syrup.</p>
+<p><b>The healthy-sounding ones:</b> honey, jaggery, fruit juice concentrate, date paste, agave nectar, cane juice. Nutritionally, your body processes these very much like sugar — jaggery's trace minerals don't change the sugar load.</p>
+<p><b>How to use this:</b> scan the list and mentally group all sugar aliases together. If three or four appear — even scattered — sugar is likely a top-two ingredient. Then check the per-100g "total sugars" line to confirm.</p>
+<div class="callout">🍬 Context: WHO recommends keeping free sugars under about 10% of daily energy — roughly 50g for an average adult, and half that is better. One "healthy" breakfast cereal serving can quietly use up a third of it.</div>`}
 ];
 const PER=6;let bCat='All',bQuery='',bPage=1;
 const bGrid=document.getElementById('blogGrid'),bPager=document.getElementById('blogPager'),bCats=document.getElementById('blogCats');
@@ -792,7 +879,8 @@ function renderBlog(){
   const list=posts.filter(p=>(bCat==='All'||p.c===bCat)&&(p.t+p.x).toLowerCase().includes(bQuery));
   const pages=Math.max(1,Math.ceil(list.length/PER));if(bPage>pages)bPage=pages;
   const slice=list.slice((bPage-1)*PER,bPage*PER);
-  bGrid.innerHTML=slice.length?slice.map(p=>`<article class="card blog-card"><div class="bimg">${p.e}</div><span class="bcat">${p.c}</span><h3>${p.t}</h3><p>${p.x}</p><div class="bmeta">${p.d} · ${p.r} read</div></article>`).join(''):'<div class="no-results">No articles match your search. 🌱</div>';
+  bGrid.innerHTML=slice.length?slice.map(p=>`<article class="card blog-card" data-post="${posts.indexOf(p)}"><div class="bimg">${p.e}</div><span class="bcat">${p.c}</span><h3>${p.t}</h3><p>${p.x}</p><div class="bmeta">${p.d} · ${p.r} read</div><div class="readmore">Read article →</div></article>`).join(''):'<div class="no-results">No articles match your search. 🌱</div>';
+  bGrid.querySelectorAll('.blog-card').forEach(el=>el.onclick=()=>openArticle(+el.dataset.post));
   bPager.innerHTML='';
   if(pages>1)for(let i=1;i<=pages;i++){const b=document.createElement('button');b.textContent=i;if(i===bPage)b.classList.add('on');b.onclick=()=>{bPage=i;renderBlog();document.getElementById('blog').scrollIntoView({behavior:'smooth'});};bPager.appendChild(b);}
 }
@@ -829,11 +917,32 @@ regions.forEach((r,i)=>{
   pMap.appendChild(b);
 });
 
+/* ---------- article modal ---------- */
+const amodal=document.getElementById('amodal'),abody=document.getElementById('abody');
+function openArticle(i){
+  const p=posts[i];
+  abody.innerHTML=`<span class="bcat">${p.c}</span><h3 class="display">${p.t}</h3><div class="bmeta">${p.d} · ${p.r} read · SafeThali</div><div class="abody">${p.body}</div>`;
+  amodal.classList.add('open');document.body.style.overflow='hidden';
+}
+function closeArticle(){amodal.classList.remove('open');document.body.style.overflow='';}
+document.getElementById('aclose').onclick=closeArticle;
+document.getElementById('ascrim').onclick=closeArticle;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeArticle();});
+
+/* ---------- parallax blobs ---------- */
+const blobs=document.querySelectorAll('.blob');
+if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+  window.addEventListener('scroll',()=>{
+    const y=window.scrollY;
+    blobs.forEach((b,i)=>b.style.translate=`0 ${y*(i?-0.08:0.12)}px`);
+  },{passive:true});
+}
+
 /* ---------- hero particles ---------- */
 const cv=document.getElementById('particles'),cx=cv.getContext('2d');
 let W,H,parts;
 function initP(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;parts=[...Array(46)].map(()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.5+1,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4}));}
-function drawP(){cx.clearRect(0,0,W,H);cx.fillStyle='rgba(34,197,94,.4)';parts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>W)p.dx*=-1;if(p.y<0||p.y>H)p.dy*=-1;cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill();});requestAnimationFrame(drawP);}
+function drawP(){cx.clearRect(0,0,W,H);cx.fillStyle='rgba(58,168,113,.28)';parts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>W)p.dx*=-1;if(p.y<0||p.y>H)p.dy*=-1;cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill();});requestAnimationFrame(drawP);}
 if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){initP();drawP();window.addEventListener('resize',initP);}
 </script>
 </body>
