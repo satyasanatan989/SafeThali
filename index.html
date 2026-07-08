@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeThali — Know Your Food. Protect Your Health.</title>
+<meta name="description" content="Food safety, nutrition, adulteration detection, label decoding and consumer rights — made simple for every Indian household.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#16A34A; --green2:#22C55E; --amber:#FACC15; --red:#EF4444;
+  --bg:#ffffff; --bg-soft:#F0FDF4; --bg-card:rgba(255,255,255,.72);
+  --ink:#14201a; --ink-soft:#4b5f54; --line:rgba(22,163,74,.16);
+  --glass:rgba(255,255,255,.6); --shadow:0 20px 50px -20px rgba(22,163,74,.25);
+  --radius:22px;
+}
+[data-theme="dark"]{
+  --bg:#0f1512; --bg-soft:#131c17; --bg-card:rgba(23,33,27,.8);
+  --ink:#e8f3ec; --ink-soft:#9db4a7; --line:rgba(34,197,94,.22);
+  --glass:rgba(19,28,23,.65); --shadow:0 20px 50px -20px rgba(0,0,0,.6);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;overflow-x:hidden;transition:background .4s,color .4s}
+h1,h2,h3,.display{font-family:'Fraunces',serif;line-height:1.12;letter-spacing:-.015em}
+img,svg{max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:6px}
+
+/* progress bar */
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--green),var(--amber));z-index:1000}
+
+/* nav */
+nav{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:min(1140px,94vw);z-index:900;
+  background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid var(--line);border-radius:999px;display:flex;align-items:center;gap:8px;
+  padding:10px 18px;box-shadow:var(--shadow)}
+.logo{font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;display:flex;align-items:center;gap:8px;margin-right:auto}
+.logo .dot{width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(34,197,94,.25)}
+.nav-links{display:flex;gap:2px;flex-wrap:wrap}
+.nav-links a{font-size:.83rem;font-weight:600;color:var(--ink-soft);padding:7px 11px;border-radius:999px;transition:.25s}
+.nav-links a:hover,.nav-links a.active{color:var(--green);background:rgba(34,197,94,.12)}
+#themeBtn{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:50%;width:38px;height:38px;font-size:1rem;transition:.3s}
+#themeBtn:hover{transform:rotate(20deg);border-color:var(--green)}
+#burger{display:none;border:none;background:none;font-size:1.5rem;color:var(--ink)}
+@media(max-width:920px){
+  .nav-links{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;background:var(--bg);border:1px solid var(--line);border-radius:24px;padding:14px;flex-direction:column;box-shadow:var(--shadow)}
+  .nav-links.open{display:flex}
+  #burger{display:block}
+}
+
+/* hero */
+header{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;
+  background:radial-gradient(1200px 600px at 70% -10%,rgba(34,197,94,.18),transparent 60%),
+             radial-gradient(900px 500px at 10% 110%,rgba(250,204,21,.14),transparent 60%),var(--bg)}
+#particles{position:absolute;inset:0;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:drift 16s ease-in-out infinite alternate;pointer-events:none}
+.blob.b1{width:420px;height:420px;background:rgba(34,197,94,.35);top:-120px;left:-120px}
+.blob.b2{width:360px;height:360px;background:rgba(250,204,21,.3);bottom:-100px;right:-80px;animation-delay:-6s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.15)}}
+.floatfood{position:absolute;font-size:2.4rem;opacity:.85;animation:floaty 7s ease-in-out infinite;filter:drop-shadow(0 12px 14px rgba(20,32,26,.18));pointer-events:none}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-26px) rotate(5deg)}}
+.hero-inner{position:relative;z-index:2;max-width:860px;padding:120px 24px 80px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green);
+  background:rgba(34,197,94,.12);border:1px solid var(--line);padding:8px 16px;border-radius:999px;margin-bottom:22px}
+.hero-inner h1{font-size:clamp(2.6rem,6.5vw,4.6rem);font-weight:600}
+.hero-inner h1 .accent{color:var(--green);font-style:italic}
+.hero-inner h1 .line{display:block;overflow:hidden}
+.hero-inner h1 .line span{display:inline-block;transform:translateY(110%);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-inner h1 .line:nth-child(2) span{animation-delay:.18s}
+@keyframes rise{to{transform:translateY(0)}}
+.sub{margin:20px auto 34px;max-width:520px;color:var(--ink-soft);font-size:1.12rem;opacity:0;animation:fadeup 1s .5s forwards}
+@keyframes fadeup{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(18px)}}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeup 1s .7s forwards}
+.btn{border:none;border-radius:999px;padding:15px 30px;font-weight:700;font-size:.98rem;transition:.3s;position:relative;overflow:hidden;display:inline-block}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 14px 30px -10px rgba(22,163,74,.55)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 36px -10px rgba(22,163,74,.6)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--green);color:var(--green);transform:translateY(-3px)}
+.hero-stats{display:flex;gap:34px;justify-content:center;margin-top:56px;flex-wrap:wrap;opacity:0;animation:fadeup 1s .9s forwards}
+.stat b{font-family:'Fraunces',serif;font-size:1.9rem;color:var(--green);display:block}
+.stat span{font-size:.8rem;color:var(--ink-soft);font-weight:600}
+
+/* waves + sections */
+.wave{display:block;width:100%;height:70px;color:var(--bg-soft)}
+section{padding:90px 24px;position:relative}
+.wrap{max-width:1120px;margin:0 auto}
+.sec-head{text-align:center;max-width:640px;margin:0 auto 54px}
+.sec-head h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:600;margin:14px 0 12px}
+.sec-head p{color:var(--ink-soft)}
+.soft{background:var(--bg-soft)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.left{transform:translateX(-40px)}
+.reveal.right{transform:translateX(40px)}
+.reveal.zoom{transform:scale(.92)}
+.reveal.show{opacity:1;transform:none}
+
+/* card grids */
+.grid{display:grid;gap:22px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:var(--bg-card);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:var(--radius);padding:28px;transition:transform .35s,box-shadow .35s,border-color .35s;position:relative}
+.card:hover{transform:translateY(-8px);box-shadow:var(--shadow);border-color:rgba(34,197,94,.4)}
+.card .emoji{font-size:2.2rem;display:inline-block;margin-bottom:14px;transition:transform .35s}
+.card:hover .emoji{transform:scale(1.18) rotate(-6deg)}
+.card h3{font-size:1.22rem;margin-bottom:8px}
+.card p{color:var(--ink-soft);font-size:.94rem}
+.card .more{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.card.open .more{max-height:300px}
+.card .more p{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.tapline{margin-top:14px;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+.safety-card{cursor:pointer}
+
+/* nutrition */
+.nut-card{border-top:5px solid var(--c,var(--green))}
+.nut-card b.dose{display:inline-block;margin-top:10px;font-size:.78rem;background:color-mix(in srgb,var(--c,var(--green)) 14%,transparent);color:var(--ink);padding:5px 12px;border-radius:999px;border:1px solid var(--line)}
+
+/* adulteration */
+.adul-card{border-left:5px solid var(--red)}
+.adul-card .warn{position:absolute;top:20px;right:20px;color:var(--red);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.6}}
+.adul-card .test{margin-top:14px;background:rgba(34,197,94,.1);border:1px dashed rgba(34,197,94,.4);border-radius:14px;padding:12px 14px;font-size:.88rem}
+.adul-card .test b{color:var(--green)}
+.adul-card .risk{font-size:.85rem;color:var(--red);font-weight:600;margin-top:8px}
+
+/* label decoder */
+.decoder{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+@media(max-width:860px){.decoder{grid-template-columns:1fr}}
+.packet{position:relative;max-width:420px;margin:0 auto;filter:drop-shadow(0 30px 40px rgba(22,163,74,.25))}
+.hotspot{position:absolute;width:34px;height:34px;border-radius:50%;border:none;background:var(--amber);color:#4a3a00;font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:.3s;box-shadow:0 0 0 0 rgba(250,204,21,.6);animation:ping 2.2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(250,204,21,.55)}70%{box-shadow:0 0 0 14px rgba(250,204,21,0)}100%{box-shadow:0 0 0 0 rgba(250,204,21,0)}}
+.hotspot:hover,.hotspot.active{background:var(--green);color:#fff;transform:scale(1.2)}
+.decode-panel{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:32px;min-height:250px;box-shadow:var(--shadow)}
+.decode-panel h3{color:var(--green);margin-bottom:10px;font-size:1.4rem}
+.decode-panel .tag{font-size:.75rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* timeline */
+.timeline{position:relative;max-width:720px;margin:0 auto;padding-left:34px}
+.timeline::before{content:"";position:absolute;left:10px;top:6px;bottom:6px;width:3px;background:linear-gradient(var(--green),var(--amber));border-radius:3px}
+.tstep{position:relative;margin-bottom:34px}
+.tstep::before{content:"";position:absolute;left:-31px;top:6px;width:17px;height:17px;border-radius:50%;background:var(--bg);border:4px solid var(--green)}
+.tstep h3{font-size:1.15rem}.tstep p{color:var(--ink-soft);font-size:.93rem}
+.tstep .emoji{font-size:1.5rem;margin-right:8px}
+
+/* myth flip */
+.flip-grid{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.flip{perspective:1200px;height:230px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
+.face.front{background:var(--bg-card)}
+.face.front .label{color:var(--red)}
+.face.back{background:var(--green);color:#fff;transform:rotateY(180deg)}
+.face .label{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+.face.back .label{color:rgba(255,255,255,.85)}
+.face h3{font-size:1.12rem;line-height:1.35}
+.face p{font-size:.9rem;margin-top:8px;opacity:.92}
+
+/* quiz */
+.quiz-box{max-width:660px;margin:0 auto;background:var(--bg-card);border:1px solid var(--line);border-radius:28px;padding:38px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.qbar{height:8px;background:var(--line);border-radius:99px;margin-bottom:26px;overflow:hidden}
+.qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--amber));transition:width .5s}
+.qq{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:20px}
+.qopt{display:block;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:16px;padding:14px 18px;margin-bottom:11px;font-weight:600;font-size:.95rem;color:var(--ink);transition:.25s}
+.qopt:hover{border-color:var(--green);transform:translateX(6px)}
+.qopt.correct{background:rgba(34,197,94,.18);border-color:var(--green)}
+.qopt.wrong{background:rgba(239,68,68,.15);border-color:var(--red)}
+.qmeta{display:flex;justify-content:space-between;font-size:.82rem;color:var(--ink-soft);font-weight:700;margin-bottom:8px}
+.qresult{text-align:center}
+.qresult .score{font-family:'Fraunces',serif;font-size:3.6rem;color:var(--green)}
+.confetti{position:absolute;top:-12px;width:10px;height:16px;opacity:.95;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(560px) rotate(720deg);opacity:0}}
+
+/* carousel */
+.carousel{max-width:680px;margin:0 auto;position:relative;text-align:center}
+.tip-slide{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:40px 34px;box-shadow:var(--shadow);min-height:170px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.tip-slide .emoji{font-size:2rem}
+.tip-slide p{font-size:1.08rem;font-weight:600}
+.dots{display:flex;gap:8px;justify-content:center;margin-top:18px}
+.dots button{width:10px;height:10px;border-radius:50%;border:none;background:var(--line);transition:.3s}
+.dots button.on{background:var(--green);transform:scale(1.35)}
+
+/* rights + faq */
+.steps{counter-reset:s}
+.rstep{display:flex;gap:18px;align-items:flex-start;margin-bottom:20px}
+.rstep .n{counter-increment:s;flex:0 0 46px;height:46px;border-radius:14px;background:var(--green);color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:1.2rem;display:flex;align-items:center;justify-content:center}
+.rstep .n::before{content:counter(s)}
+.faq{max-width:760px;margin:0 auto}
+.faq-item{border:1px solid var(--line);border-radius:18px;margin-bottom:12px;background:var(--bg-card);overflow:hidden}
+.faq-item button{width:100%;background:none;border:none;text-align:left;padding:18px 22px;font-weight:700;font-size:1rem;color:var(--ink);display:flex;justify-content:space-between;align-items:center}
+.faq-item .a{max-height:0;overflow:hidden;transition:max-height .45s ease;color:var(--ink-soft);font-size:.93rem}
+.faq-item.open .a{max-height:220px}
+.faq-item .a p{padding:0 22px 18px}
+.faq-item .chev{transition:transform .3s;color:var(--green)}
+.faq-item.open .chev{transform:rotate(180deg)}
+
+/* contact + footer */
+.contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px}
+@media(max-width:820px){.contact-grid{grid-template-columns:1fr}}
+.field{margin-bottom:16px}
+.field input,.field textarea{width:100%;background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font-family:inherit;font-size:.95rem;color:var(--ink);transition:.3s}
+.field input:focus,.field textarea:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 4px rgba(34,197,94,.15)}
+footer{background:var(--bg-soft);border-top:1px solid var(--line);padding:54px 24px 30px;margin-top:0}
+.foot-grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:36px}
+@media(max-width:720px){.foot-grid{grid-template-columns:1fr}}
+footer h4{font-family:'Fraunces',serif;margin-bottom:12px}
+footer a{display:block;color:var(--ink-soft);font-size:.9rem;padding:4px 0;transition:.2s}
+footer a:hover{color:var(--green)}
+.copyright{text-align:center;color:var(--ink-soft);font-size:.82rem;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);max-width:1120px;margin-left:auto;margin-right:auto}
+
+#topBtn{position:fixed;bottom:26px;right:26px;width:50px;height:50px;border-radius:50%;border:none;background:var(--green);color:#fff;font-size:1.2rem;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.35s;z-index:800}
+#topBtn.show{opacity:1;pointer-events:auto}
+#topBtn:hover{transform:translateY(-5px)}
+
+
+/* blog */
+.blog-tools{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:30px;justify-content:center}
+#blogSearch{flex:1;min-width:240px;max-width:380px;background:var(--bg-card);border:1.5px solid var(--line);border-radius:999px;padding:13px 20px;font-family:inherit;font-size:.95rem;color:var(--ink)}
+#blogSearch:focus{border-color:var(--green);outline:none;box-shadow:0 0 0 4px rgba(34,197,94,.15)}
+.cats{display:flex;gap:8px;flex-wrap:wrap}
+.cats button{border:1.5px solid var(--line);background:transparent;color:var(--ink-soft);font-weight:700;font-size:.8rem;padding:8px 16px;border-radius:999px;transition:.25s}
+.cats button:hover{border-color:var(--green);color:var(--green)}
+.cats button.on{background:var(--green);border-color:var(--green);color:#fff}
+.blog-card .bimg{height:130px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:16px;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(250,204,21,.18))}
+.blog-card .bcat{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.blog-card h3{margin:6px 0 8px;font-size:1.1rem}
+.blog-card .bmeta{font-size:.78rem;color:var(--ink-soft);margin-top:12px;font-weight:600}
+.pager{display:flex;gap:8px;justify-content:center;margin-top:32px}
+.pager button{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--line);background:transparent;color:var(--ink);font-weight:800;transition:.25s}
+.pager button.on,.pager button:hover{background:var(--green);border-color:var(--green);color:#fff}
+.no-results{text-align:center;color:var(--ink-soft);padding:40px;grid-column:1/-1}
+/* pulse */
+.pulse-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:820px){.pulse-grid{grid-template-columns:1fr}}
+.pulse-map{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.pulse-map button{border:1.5px solid var(--line);background:var(--bg-card);border-radius:18px;padding:22px 16px;text-align:left;transition:.3s;color:var(--ink)}
+.pulse-map button .pe{font-size:1.6rem;display:block;margin-bottom:8px}
+.pulse-map button b{font-size:1rem}
+.pulse-map button span.pv{display:block;font-size:.78rem;color:var(--ink-soft);font-weight:600;margin-top:4px}
+.pulse-map button:hover,.pulse-map button.on{border-color:var(--green);transform:translateY(-4px);box-shadow:var(--shadow)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span class="dot"></span>Safe<span style="color:var(--green)">Thali</span></div>
+  <div class="nav-links" id="navLinks">
+    <a href="#home" class="active">Home</a>
+    <a href="#safety">Safety</a>
+    <a href="#nutrition">Nutrition</a>
+    <a href="#labels">Labels</a>
+    <a href="#adulteration">Adulteration</a>
+    <a href="#myths">Myths</a>
+    <a href="#hygiene">Hygiene</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#rights">Rights</a>
+    <a href="#blog">Blog</a>
+    <a href="#resources">Resources</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button id="themeBtn" aria-label="Toggle dark mode">🌙</button>
+  <button id="burger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- HERO -->
+<header id="home">
+  <canvas id="particles"></canvas>
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <span class="floatfood" style="top:18%;left:12%">🥦</span>
+  <span class="floatfood" style="top:28%;right:14%;animation-delay:-2s">🥛</span>
+  <span class="floatfood" style="top:62%;left:16%;animation-delay:-4s">🌶️</span>
+  <span class="floatfood" style="top:70%;right:18%;animation-delay:-1s">🍯</span>
+  <span class="floatfood" style="top:14%;right:34%;animation-delay:-3s">🥕</span>
+  <span class="floatfood" style="bottom:12%;left:44%;animation-delay:-5s">🌾</span>
+  <div class="hero-inner">
+    <span class="eyebrow">🛡️ Food Safety • Made Simple</span>
+    <h1>
+      <span class="line"><span>Know Your Food.</span></span>
+      <span class="line"><span>Protect Your <em class="accent">Health.</em></span></span>
+    </h1>
+    <p class="sub">Adulteration checks you can do at home, labels decoded, myths busted, and your rights as a consumer — all in plain language for every Indian household.</p>
+    <div class="cta-row">
+      <a href="#safety" class="btn btn-primary">Explore Food Safety</a>
+      <a href="#quiz" class="btn btn-ghost">Check Your Food IQ</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b data-count="1">0</b><span>in 10 foods risk adulteration*</span></div>
+      <div class="stat"><b data-count="8">0</b><span>home tests you'll learn</span></div>
+      <div class="stat"><b data-count="14">0</b><span>digit FSSAI code decoded</span></div>
+    </div>
+  </div>
+</header>
+
+<svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="currentColor" d="M0,32L60,37.3C120,43,240,53,360,53.3C480,53,600,43,720,37.3C840,32,960,32,1080,37.3C1200,43,1320,53,1380,58.7L1440,64L1440,70L0,70Z"></path></svg>
+
+<!-- FOOD SAFETY -->
+<section id="safety" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">01 — Food Safety</span>
+      <h2>The basics that keep food safe</h2>
+      <p>Tap any card to open the detail. These are the six things that cause most foodborne illness at home.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card safety-card reveal"><span class="emoji">🦠</span><h3>Contamination</h3><p>How germs, chemicals and foreign objects get into food.</p><div class="more"><p>Biological (bacteria, viruses), chemical (cleaning agents, pesticide residue) and physical (hair, glass) hazards. Keep cleaning chemicals far from food prep areas and always cover stored food.</p></div><div class="tapline">Tap to expand +</div></div>
+      <div class="card safety-card reveal"><span class="emoji">🔀</span><h3>Cross-Contamination</h3><p>When raw food spreads bacteria to ready-to-eat food.</p><div class="more"><p>Use separate boards and knives for raw meat/fish and for vegetables & cooked food. Never place cooked food on a plate that held raw meat. Wash hands between tasks.</p></div><div class="tapline">Tap to expand +</div></div>
+      <div class="card safety-card reveal"><span class="emoji">🌡️</span><h3>Temperature Danger Zone</h3><p>5°C to 60°C — where bacteria multiply fastest.</p><div class="more"><p>Bacteria double every 20 minutes in this range. Keep hot food above 60°C and cold food below 5°C. Don't leave cooked food at room temperature for more than 2 hours (1 hour in Indian summer heat).</p></div><div class="tapline">Tap to expand +</div></div>
+      <div class="card safety-card reveal"><span class="emoji">📅</span><h3>Shelf Life</h3><p>"Best before" vs "Use by" — they are not the same.</p><div class="more"><p><b>Use by</b> is about safety — don't eat after this date. <b>Best before</b> is about quality — food may be safe but less fresh. Learn the full difference in the Myths section.</p></div><div class="tapline">Tap to expand +</div></div>
+      <div class="card safety-card reveal"><span class="emoji">🧊</span><h3>Food Storage</h3><p>The fridge order that prevents drips and spoilage.</p><div class="more"><p>Top shelves: ready-to-eat & leftovers. Bottom shelf: raw meat & fish (so drips don't fall on other food). Crisper: vegetables. Door: condiments only — it's the warmest zone, not for milk or eggs.</p></div><div class="tapline">Tap to expand +</div></div>
+      <div class="card safety-card reveal"><span class="emoji">🔥</span><h3>Cooking Temperatures</h3><p>Heat that actually kills harmful bacteria.</p><div class="more"><p>Poultry: 74°C core. Minced meat: 71°C. Fish: 63°C. Reheat leftovers to steaming hot (75°C) all the way through — reheat only once. When in doubt, cook until juices run clear.</p></div><div class="tapline">Tap to expand +</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NUTRITION -->
+<section id="nutrition">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">02 — Nutrition</span>
+      <h2>What a balanced plate is made of</h2>
+      <p>Seven building blocks your body needs every day, with a simple daily guide.</p>
+    </div>
+    <div class="grid g4">
+      <div class="card nut-card reveal" style="--c:#EF4444"><span class="emoji">🥚</span><h3>Proteins</h3><p>Build and repair muscles, skin and blood.</p><b class="dose">Dal, eggs, paneer, chicken</b></div>
+      <div class="card nut-card reveal" style="--c:#F59E0B"><span class="emoji">🍚</span><h3>Carbohydrates</h3><p>Your body's main source of energy.</p><b class="dose">Rice, roti, millets, potato</b></div>
+      <div class="card nut-card reveal" style="--c:#FACC15"><span class="emoji">🥑</span><h3>Fats</h3><p>Energy store & vitamin absorption.</p><b class="dose">Ghee, nuts, oils — in limit</b></div>
+      <div class="card nut-card reveal" style="--c:#22C55E"><span class="emoji">🍊</span><h3>Vitamins</h3><p>Tiny amounts, huge role in immunity.</p><b class="dose">Fruits, greens, sunlight</b></div>
+      <div class="card nut-card reveal" style="--c:#3B82F6"><span class="emoji">🥬</span><h3>Minerals</h3><p>Bones, blood and nerve function.</p><b class="dose">Leafy greens, milk, seeds</b></div>
+      <div class="card nut-card reveal" style="--c:#8B5CF6"><span class="emoji">🌽</span><h3>Fiber</h3><p>Healthy digestion, steady sugar.</p><b class="dose">Whole grains, fruit, salad</b></div>
+      <div class="card nut-card reveal" style="--c:#06B6D4"><span class="emoji">💧</span><h3>Water</h3><p>Every cell depends on it.</p><b class="dose">8–10 glasses a day</b></div>
+      <div class="card nut-card reveal" style="--c:#16A34A"><span class="emoji">🍽️</span><h3>Balanced Plate</h3><p>½ vegetables & fruit, ¼ grains, ¼ protein.</p><b class="dose">The simplest daily rule</b></div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" style="transform:rotate(180deg)" viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="currentColor" d="M0,32L60,37.3C120,43,240,53,360,53.3C480,53,600,43,720,37.3C840,32,960,32,1080,37.3C1200,43,1320,53,1380,58.7L1440,64L1440,70L0,70Z"></path></svg>
+
+<!-- LABEL DECODER -->
+<section id="labels" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">03 — Label Decoder</span>
+      <h2>Read a food packet like a pro</h2>
+      <p>Tap the numbered hotspots on the packet to learn what each part really tells you.</p>
+    </div>
+    <div class="decoder">
+      <div class="packet reveal left">
+        <svg viewBox="0 0 300 380" width="100%">
+          <rect x="10" y="10" width="280" height="360" rx="20" fill="var(--bg-card)" stroke="var(--line)" stroke-width="2"/>
+          <rect x="10" y="10" width="280" height="90" rx="20" fill="var(--green)"/>
+          <text x="150" y="55" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="24" font-weight="700">TASTY OATS</text>
+          <text x="150" y="80" text-anchor="middle" fill="#eafff0" font-size="12">Wholegrain Breakfast</text>
+          <rect x="30" y="120" width="240" height="1" fill="var(--line)"/>
+          <text x="34" y="150" fill="var(--ink)" font-size="11" font-weight="700">NUTRITION FACTS</text>
+          <text x="34" y="172" fill="var(--ink-soft)" font-size="10">Energy 389 kcal · Protein 13g</text>
+          <text x="34" y="188" fill="var(--ink-soft)" font-size="10">Total Sugar 1g · Fiber 10g</text>
+          <text x="34" y="220" fill="var(--ink)" font-size="11" font-weight="700">INGREDIENTS</text>
+          <text x="34" y="238" fill="var(--ink-soft)" font-size="9">Rolled oats (100%)</text>
+          <text x="34" y="290" fill="var(--ink-soft)" font-size="10">Net Wt: 400g</text>
+          <text x="34" y="352" fill="var(--ink-soft)" font-size="9">FSSAI: 10012345678901</text>
+        </svg>
+        <button class="hotspot" style="top:14%;right:6%" data-key="veg" aria-label="Veg symbol">◉</button>
+        <button class="hotspot" style="top:38%;left:2%" data-key="nutrition">1</button>
+        <button class="hotspot" style="top:58%;left:2%" data-key="ingredients">2</button>
+        <button class="hotspot" style="top:70%;right:6%" data-key="sugar">3</button>
+        <button class="hotspot" style="bottom:14%;left:2%" data-key="fssai">4</button>
+        <button class="hotspot" style="bottom:4%;right:6%" data-key="dates">5</button>
+      </div>
+      <div class="decode-panel reveal right" id="decodePanel">
+        <span class="tag">Tap a hotspot</span>
+        <h3>Start decoding →</h3>
+        <p>Every FSSAI-compliant packet must legally show these details. Tap the glowing numbers to learn how to read each one and spot what matters for your health.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADULTERATION -->
+<section id="adulteration">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">04 — Adulteration</span>
+      <h2>Common adulterants & home tests</h2>
+      <p>Simple checks you can do in your own kitchen — based on FSSAI's DART (Detect Adulteration with Rapid Test) methods.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🥛</span><h3>Milk</h3><p><b>Adulterated with:</b> water, starch, detergent.</p><p class="risk">Risk: nutrient loss, stomach infection.</p><div class="test"><b>Home test:</b> Put a drop on a slanted surface. Pure milk flows slowly leaving a white trail; water-added milk flows fast without a trail. For starch, add iodine — it turns blue.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🟡</span><h3>Turmeric</h3><p><b>Adulterated with:</b> metanil yellow, chalk.</p><p class="risk">Risk: metanil yellow is carcinogenic.</p><div class="test"><b>Home test:</b> Add a pinch to water — pure turmeric settles and water stays light. Add a few drops of HCl/lemon; a pink-violet colour that stays means synthetic dye.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🍯</span><h3>Honey</h3><p><b>Adulterated with:</b> sugar syrup, water.</p><p class="risk">Risk: empty calories, no real benefit.</p><div class="test"><b>Home test:</b> Dip a cotton bud in honey and light it. Pure honey burns; adulterated honey with moisture won't catch easily or will crackle.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🍵</span><h3>Tea</h3><p><b>Adulterated with:</b> used/exhausted tea leaves, colour.</p><p class="risk">Risk: liver damage from added dyes.</p><div class="test"><b>Home test:</b> Rub leaves on wet white paper. Artificial colour leaves a stain on the paper immediately; pure tea does not.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">☕</span><h3>Coffee</h3><p><b>Adulterated with:</b> chicory, tamarind seed powder.</p><p class="risk">Risk: digestive issues, no caffeine value.</p><div class="test"><b>Home test:</b> Sprinkle on water surface. Pure coffee floats; chicory sinks quickly leaving colour streaks behind it.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🌶️</span><h3>Chilli Powder</h3><p><b>Adulterated with:</b> brick powder, artificial colour.</p><p class="risk">Risk: heavy metals, stomach damage.</p><div class="test"><b>Home test:</b> Sprinkle on water. Brick powder settles as gritty residue you can feel; soap/starch adulterants leave colour streaks that spread.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🛢️</span><h3>Mustard Oil</h3><p><b>Adulterated with:</b> argemone oil.</p><p class="risk">Risk: epidemic dropsy, serious illness.</p><div class="test"><b>Home test:</b> Add nitric acid to a sample and shake. A reddish-brown colour indicates argemone oil contamination.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">🧈</span><h3>Ghee</h3><p><b>Adulterated with:</b> vanaspati, mashed potato.</p><p class="risk">Risk: trans fats, heart risk.</p><div class="test"><b>Home test:</b> Add a little HCl + sugar to melted ghee and shake. A crimson/red colour in the lower layer indicates vanaspati.</div></div>
+      <div class="card adul-card reveal"><span class="warn">⚠️</span><span class="emoji">⚫</span><h3>Black Pepper</h3><p><b>Adulterated with:</b> dried papaya seeds.</p><p class="risk">Risk: liver toxicity over time.</p><div class="test"><b>Home test:</b> Drop into water. Pure pepper sinks; light papaya seeds and hollow, shrivelled fakes float on the surface.</div></div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="currentColor" d="M0,32L60,37.3C120,43,240,53,360,53.3C480,53,600,43,720,37.3C840,32,960,32,1080,37.3C1200,43,1320,53,1380,58.7L1440,64L1440,70L0,70Z"></path></svg>
+
+<!-- MYTHS -->
+<section id="myths" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">05 — Myths vs Facts</span>
+      <h2>Tap a card to flip the truth</h2>
+      <p>Common food beliefs — and what the science actually says.</p>
+    </div>
+    <div class="grid flip-grid">
+      <div class="flip reveal"><div class="flip-inner"><div class="face front"><span class="label">Myth</span><h3>The 5-second rule keeps dropped food safe.</h3></div><div class="face back"><span class="label">Fact</span><h3>False.</h3><p>Bacteria transfer to food instantly on contact. Time barely matters — the surface does.</p></div></div></div>
+      <div class="flip reveal"><div class="flip-inner"><div class="face front"><span class="label">Myth</span><h3>Microwaved food becomes radioactive.</h3></div><div class="face back"><span class="label">Fact</span><h3>False.</h3><p>Microwaves only vibrate water molecules to heat food. No radiation stays behind — it's perfectly safe.</p></div></div></div>
+      <div class="flip reveal"><div class="flip-inner"><div class="face front"><span class="label">Myth</span><h3>Brown bread is always healthier than white.</h3></div><div class="face back"><span class="label">Fact</span><h3>Not always.</h3><p>Much "brown" bread is white bread with caramel colour. Check for "whole wheat/atta" as the first ingredient.</p></div></div></div>
+      <div class="flip reveal"><div class="flip-inner"><div class="face front"><span class="label">Myth</span><h3>"Expiry" and "Best before" mean the same thing.</h3></div><div class="face back"><span class="label">Fact</span><h3>No.</h3><p>Best before = quality guide, often still safe. Expiry/Use-by = safety limit. Don't eat past it.</p></div></div></div>
+      <div class="flip reveal"><div class="flip-inner"><div class="face front"><span class="label">Myth</span><h3>Fresh vegetables are always better than frozen.</h3></div><div class="face back"><span class="label">Fact</span><h3>Not necessarily.</h3><p>Frozen veg is often flash-frozen at peak ripeness, locking in nutrients that "fresh" loses over days of transport.</p></div></div></div>
+      <div class="flip reveal"><div class="flip-inner"><div class="face front"><span class="label">Myth</span><h3>Washing raw chicken makes it safer.</h3></div><div class="face back"><span class="label">Fact</span><h3>Opposite.</h3><p>Washing splashes bacteria around your sink. Cooking to 74°C is what actually makes it safe.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- HYGIENE -->
+<section id="hygiene">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">06 — Kitchen Hygiene</span>
+      <h2>Six steps, start to plate</h2>
+      <p>The WHO "Five Keys" adapted for the Indian kitchen.</p>
+    </div>
+    <div class="timeline">
+      <div class="tstep reveal left"><h3><span class="emoji">🧼</span>Wash Hands</h3><p>20 seconds with soap before cooking, after handling raw meat, and after using the washroom. Most contamination starts here.</p></div>
+      <div class="tstep reveal left"><h3><span class="emoji">🔪</span>Separate Raw & Cooked</h3><p>Different boards, knives and containers for raw and ready-to-eat food. Keep raw meat sealed at the bottom of the fridge.</p></div>
+      <div class="tstep reveal left"><h3><span class="emoji">🧽</span>Clean Utensils & Surfaces</h3><p>Wash boards and counters with hot soapy water. Replace worn sponges and wooden boards with deep grooves.</p></div>
+      <div class="tstep reveal left"><h3><span class="emoji">🔥</span>Cook Properly</h3><p>Cook to safe core temperatures and reheat leftovers until steaming hot all the way through — only once.</p></div>
+      <div class="tstep reveal left"><h3><span class="emoji">🧊</span>Store Safely</h3><p>Refrigerate cooked food within 2 hours (1 hour in summer). Cool leftovers quickly; don't overpack the fridge.</p></div>
+      <div class="tstep reveal left"><h3><span class="emoji">💧</span>Use Safe Water & Produce</h3><p>Wash fruit and vegetables under running water. Use safe water for cooking and for making ice.</p></div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" style="transform:rotate(180deg)" viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="currentColor" d="M0,32L60,37.3C120,43,240,53,360,53.3C480,53,600,43,720,37.3C840,32,960,32,1080,37.3C1200,43,1320,53,1380,58.7L1440,64L1440,70L0,70Z"></path></svg>
+
+<!-- QUIZ -->
+<section id="quiz" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">07 — Food IQ Quiz</span>
+      <h2>How much do you really know?</h2>
+      <p>10 quick questions. See your score with a little celebration at the end.</p>
+    </div>
+    <div class="quiz-box reveal zoom" id="quizBox"></div>
+  </div>
+</section>
+
+<!-- TIPS CAROUSEL -->
+<section id="tips">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">08 — Daily Tips</span>
+      <h2>One good habit at a time</h2>
+    </div>
+    <div class="carousel reveal">
+      <div class="tip-slide" id="tipSlide"></div>
+      <div class="dots" id="tipDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- RIGHTS -->
+<section id="rights" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">09 — Consumer Rights</span>
+      <h2>Found something wrong? Here's what to do</h2>
+      <p>You have the legal right to safe food. Reporting is simpler than most people think.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:40px;align-items:start">
+      <div class="reveal left">
+        <div class="steps">
+          <div class="rstep"><div class="n"></div><div><h3>Keep the evidence</h3><p>Save the product, the bill, and photos of the batch number, FSSAI licence and expiry date.</p></div></div>
+          <div class="rstep"><div class="n"></div><div><h3>Note the FSSAI number</h3><p>The 14-digit licence number on the pack identifies the manufacturer — it's key to any complaint.</p></div></div>
+          <div class="rstep"><div class="n"></div><div><h3>File on the FSSAI Food Safety Connect app or portal</h3><p>Use the official FSSAI grievance system (foodlicensing / Food Safety Connect) to raise a food safety complaint.</p></div></div>
+          <div class="rstep"><div class="n"></div><div><h3>Escalate if unresolved</h3><p>Approach the Consumer Helpline (1915) or the Consumer Commission under the Consumer Protection Act, 2019.</p></div></div>
+        </div>
+      </div>
+      <div class="reveal right">
+        <div class="card"><span class="emoji">🔎</span><h3>Verify before you buy</h3><p>A genuine FSSAI licence number can be checked on the FSSAI FoSCoS portal. No number, or a fake-looking one, is a red flag.</p></div>
+        <div class="card" style="margin-top:22px"><span class="emoji">📢</span><h3>Know the helplines</h3><p><b>FSSAI Food Safety Connect</b> — food safety complaints.<br><b>National Consumer Helpline 1915</b> — consumer grievances.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">10 — Blog</span>
+      <h2>Read, learn, share</h2>
+      <p>Search articles or filter by category.</p>
+    </div>
+    <div class="blog-tools reveal">
+      <input type="search" id="blogSearch" placeholder="🔍 Search articles…" aria-label="Search articles">
+      <div class="cats" id="blogCats"></div>
+    </div>
+    <div class="grid g3" id="blogGrid"></div>
+    <div class="pager" id="blogPager"></div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path fill="currentColor" d="M0,32L60,37.3C120,43,240,53,360,53.3C480,53,600,43,720,37.3C840,32,960,32,1080,37.3C1200,43,1320,53,1380,58.7L1440,64L1440,70L0,70Z"></path></svg>
+
+<!-- RESOURCES -->
+<section id="resources" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">11 — Resources</span>
+      <h2>Free downloads for your kitchen</h2>
+      <p>Practical checklists you can save, print and stick on the fridge.</p>
+    </div>
+    <div class="grid g4">
+      <div class="card reveal"><span class="emoji">🧾</span><h3>Kitchen Hygiene Checklist</h3><p>Daily & weekly hygiene tasks in one printable sheet.</p><button class="btn btn-primary res-btn" data-res="hygiene">Download</button></div>
+      <div class="card reveal"><span class="emoji">🧪</span><h3>Home Adulteration Test Card</h3><p>All 9 quick tests from this site on one card.</p><button class="btn btn-primary res-btn" data-res="tests">Download</button></div>
+      <div class="card reveal"><span class="emoji">🧊</span><h3>Fridge Storage Guide</h3><p>What goes on which shelf, and for how long.</p><button class="btn btn-primary res-btn" data-res="fridge">Download</button></div>
+      <div class="card reveal"><span class="emoji">🏷️</span><h3>Label Reading Cheat Sheet</h3><p>The 6 things to check before buying any packet.</p><button class="btn btn-primary res-btn" data-res="label">Download</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARENESS MAP -->
+<section id="pulse">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">12 — Awareness Pulse</span>
+      <h2>Food safety awareness across India</h2>
+      <p>Tap a region to see what people there search and worry about most. (Illustrative data for awareness.)</p>
+    </div>
+    <div class="pulse-grid reveal">
+      <div class="pulse-map" id="pulseMap"></div>
+      <div class="decode-panel" id="pulsePanel">
+        <span class="tag">Pick a region</span>
+        <h3>India, region by region →</h3>
+        <p>Concerns differ across the country — milk adulteration in the North, spice purity in the South, packaged-food labels in metro cities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="stories" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">13 — Stories</span>
+      <h2>What readers say</h2>
+    </div>
+    <div class="grid g3">
+      <div class="card reveal"><span class="emoji">👩‍🦱</span><p>"The iodine milk test actually worked — our local dairy milk turned blue. We switched suppliers the same week."</p><b class="dose" style="margin-top:14px">Sunita · Lucknow</b></div>
+      <div class="card reveal"><span class="emoji">👨</span><p>"I never knew the veg symbol and the FSSAI number were legally required. Now I check both before buying anything for my kids."</p><b class="dose" style="margin-top:14px">Ramesh · Pune</b></div>
+      <div class="card reveal"><span class="emoji">👵</span><p>"Scored 9/10 on the quiz on my second try. My grandmother now does the pepper float test herself!"</p><b class="dose" style="margin-top:14px">Ananya · Guwahati</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2>Quick answers</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item reveal"><button>What is FSSAI? <span class="chev">▾</span></button><div class="a"><p>The Food Safety and Standards Authority of India — the government body that regulates and supervises food safety. Every licensed food business displays a 14-digit FSSAI number.</p></div></div>
+      <div class="faq-item reveal"><button>Are home adulteration tests 100% accurate? <span class="chev">▾</span></button><div class="a"><p>They're quick screening indicators, not lab confirmation. A failed home test is a strong reason to stop using the product and report it, but only an accredited lab gives a legal verdict.</p></div></div>
+      <div class="faq-item reveal"><button>Is food past "best before" dangerous? <span class="chev">▾</span></button><div class="a"><p>Usually not immediately — best before is about quality, not safety. "Use by" / expiry is the safety limit and should be respected strictly.</p></div></div>
+      <div class="faq-item reveal"><button>How long can cooked food stay out? <span class="chev">▾</span></button><div class="a"><p>No more than 2 hours at room temperature — and just 1 hour in hot Indian summers. After that, bacteria multiply into unsafe numbers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="soft">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Get in touch</span>
+      <h2>Questions, feedback or a story to share?</h2>
+    </div>
+    <div class="contact-grid">
+      <form class="reveal left" id="contactForm">
+        <div class="field"><input type="text" placeholder="Your name" required></div>
+        <div class="field"><input type="email" placeholder="Your email" required></div>
+        <div class="field"><textarea rows="5" placeholder="Your message" required></textarea></div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Send Message</button>
+        <p id="formMsg" style="margin-top:12px;color:var(--green);font-weight:700;display:none">Thank you! Your message has been noted. ✅</p>
+      </form>
+      <div class="reveal right">
+        <div class="card"><span class="emoji">📬</span><h3>Newsletter</h3><p>Get one practical food-safety tip a week.</p><div class="field" style="margin-top:14px"><input type="email" placeholder="you@email.com"></div><button class="btn btn-primary" style="width:100%" onclick="alert('Subscribed! (demo)')">Subscribe</button></div>
+        <div class="card" style="margin-top:22px"><span class="emoji">🌐</span><h3>Follow along</h3><p>Food facts, myths busted and safety reels.</p><div style="display:flex;gap:10px;margin-top:12px;font-size:1.5rem">📸 💼 ▶️ 🐦</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="logo" style="font-size:1.3rem"><span class="dot"></span>SafeThali</div>
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-top:12px;max-width:340px">Making food safety, nutrition and consumer rights simple for every Indian household. An educational awareness initiative.</p>
+    </div>
+    <div><h4>Explore</h4><a href="#safety">Food Safety</a><a href="#adulteration">Adulteration</a><a href="#labels">Label Decoder</a><a href="#quiz">Food Quiz</a><a href="#blog">Blog</a></div>
+    <div><h4>Learn</h4><a href="#myths">Myths vs Facts</a><a href="#hygiene">Kitchen Hygiene</a><a href="#rights">Consumer Rights</a><a href="#faq">FAQ</a><a href="#resources">Resources</a></div>
+  </div>
+  <div class="copyright">© 2026 SafeThali · An educational initiative · Home tests are screening indicators, not lab-certified results · Privacy · Terms · Disclaimer</div>
+</footer>
+
+<button id="topBtn" aria-label="Scroll to top">↑</button>
+
+<script>
+/* ---------- theme ---------- */
+const root=document.documentElement, themeBtn=document.getElementById('themeBtn');
+themeBtn.onclick=()=>{const d=root.getAttribute('data-theme')==='dark';root.setAttribute('data-theme',d?'light':'dark');themeBtn.textContent=d?'🌙':'☀️';};
+
+/* ---------- mobile nav ---------- */
+const burger=document.getElementById('burger'), navLinks=document.getElementById('navLinks');
+burger.onclick=()=>navLinks.classList.toggle('open');
+navLinks.querySelectorAll('a').forEach(a=>a.onclick=()=>navLinks.classList.remove('open'));
+
+/* ---------- progress + top btn + active link ---------- */
+const prog=document.getElementById('progress'), topBtn=document.getElementById('topBtn');
+const links=[...document.querySelectorAll('.nav-links a')];
+const secs=links.map(l=>document.querySelector(l.getAttribute('href')));
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement, sc=h.scrollTop, max=h.scrollHeight-h.clientHeight;
+  prog.style.width=(sc/max*100)+'%';
+  topBtn.classList.toggle('show',sc>500);
+  let cur=secs.length-1;
+  for(let i=0;i<secs.length;i++){if(secs[i]&&secs[i].getBoundingClientRect().top<160)cur=i;}
+  links.forEach((l,i)=>l.classList.toggle('active',i===cur));
+});
+topBtn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+
+/* ---------- reveal on scroll ---------- */
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*70)+'ms';io.observe(el);});
+
+/* ---------- animated counters ---------- */
+const cio=new IntersectionObserver((es)=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target,t=+el.dataset.count;let n=0;
+  const step=()=>{n+=Math.ceil(t/30);if(n>=t){el.textContent=t;}else{el.textContent=n;requestAnimationFrame(step);}};
+  step();cio.unobserve(el);
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+/* ---------- safety cards expand ---------- */
+document.querySelectorAll('.safety-card').forEach(c=>c.onclick=()=>{
+  c.classList.toggle('open');
+  const t=c.querySelector('.tapline');t.textContent=c.classList.contains('open')?'Tap to close −':'Tap to expand +';
+});
+
+/* ---------- label decoder ---------- */
+const decodeData={
+  veg:{tag:'Symbol',h:'Veg / Non-Veg Mark',p:'A green dot in a green square = vegetarian. A brown/red dot = non-vegetarian. Legally mandatory on every packaged food in India.'},
+  nutrition:{tag:'Panel 1',h:'Nutrition Facts',p:'Shows energy, protein, carbs, fat and sugar — usually per 100g and per serving. Compare the per-100g column between brands, not the per-serving one which can be manipulated.'},
+  ingredients:{tag:'Panel 2',h:'Ingredients List',p:'Listed in descending order by weight. The first ingredient is the largest component. If sugar or refined flour tops the list, that tells you a lot.'},
+  sugar:{tag:'Watch',h:'Added Sugar',p:'Hidden under names like maltose, dextrose, corn syrup, fruit juice concentrate. Multiple sugar names lower on the list can add up to a lot.'},
+  fssai:{tag:'Trust',h:'FSSAI Licence Number',p:'A 14-digit number proving the maker is registered. You can verify it on the FSSAI FoSCoS portal. Missing or fake numbers are a serious red flag.'},
+  dates:{tag:'Dates',h:'Mfg, Expiry & Batch',p:'Manufacturing date, Best-before/Use-by, and batch number. The batch number lets authorities trace a product during recalls — always check it exists.'}
+};
+const panel=document.getElementById('decodePanel');
+document.querySelectorAll('.hotspot').forEach(h=>h.onclick=()=>{
+  document.querySelectorAll('.hotspot').forEach(x=>x.classList.remove('active'));
+  h.classList.add('active');
+  const d=decodeData[h.dataset.key];
+  panel.innerHTML=`<span class="tag">${d.tag}</span><h3>${d.h}</h3><p>${d.p}</p>`;
+  panel.style.animation='none';panel.offsetHeight;panel.style.animation='fadeup .5s';
+});
+
+/* ---------- myth flip ---------- */
+document.querySelectorAll('.flip').forEach(f=>f.onclick=()=>f.classList.toggle('flipped'));
+
+/* ---------- FAQ ---------- */
+document.querySelectorAll('.faq-item button').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('open'));
+
+/* ---------- contact ---------- */
+document.getElementById('contactForm').onsubmit=e=>{e.preventDefault();document.getElementById('formMsg').style.display='block';e.target.reset();};
+
+/* ---------- tips carousel ---------- */
+const tips=[
+  {e:'🧊',t:'Store raw meat on the lowest fridge shelf so drips never fall on other food.'},
+  {e:'🍋',t:'A pinch of turmeric in warm milk is soothing — but always check the turmeric is pure first.'},
+  {e:'⏰',t:'Refrigerate leftovers within 1 hour during summer, 2 hours otherwise.'},
+  {e:'🥗',t:'Wash fruits and vegetables under running water — not soaking in still water.'},
+  {e:'🔥',t:'Reheat leftovers only once, until steaming hot all the way through.'},
+  {e:'🏷️',t:'Compare the per-100g nutrition column between brands, not per-serving.'}
+];
+let ti=0;const tipSlide=document.getElementById('tipSlide'),tipDots=document.getElementById('tipDots');
+tips.forEach((_,i)=>{const b=document.createElement('button');b.onclick=()=>{ti=i;renderTip();};tipDots.appendChild(b);});
+function renderTip(){const t=tips[ti];tipSlide.innerHTML=`<span class="emoji">${t.e}</span><p>${t.t}</p>`;tipSlide.style.animation='none';tipSlide.offsetHeight;tipSlide.style.animation='fadeup .5s';[...tipDots.children].forEach((d,i)=>d.classList.toggle('on',i===ti));}
+renderTip();setInterval(()=>{ti=(ti+1)%tips.length;renderTip();},4500);
+
+/* ---------- quiz ---------- */
+const quiz=[
+  {q:'What is the "temperature danger zone" for bacteria?',o:['0°C to 4°C','5°C to 60°C','60°C to 100°C','Below freezing'],a:1},
+  {q:'What does a green dot in a green square mean?',o:['Organic','Vegetarian','FSSAI approved','Low sugar'],a:1},
+  {q:'How many digits are in an FSSAI licence number?',o:['10','12','14','16'],a:2},
+  {q:'Pure honey, when a burning cotton bud touches it, will…',o:['Not burn at all','Burn','Turn blue','Explode'],a:1},
+  {q:'"Best before" date mainly refers to:',o:['Safety','Quality','Price','Weight'],a:1},
+  {q:'How is milk with starch detected at home?',o:['Add lemon','Add iodine (turns blue)','Boil it','Freeze it'],a:1},
+  {q:'Safe core cooking temperature for chicken is about:',o:['50°C','60°C','74°C','100°C'],a:2},
+  {q:'Turmeric adulterated with metanil yellow is dangerous because it is:',o:['Sour','Carcinogenic','Salty','Bitter'],a:1},
+  {q:'Cooked food should not sit at room temp longer than (summer):',o:['1 hour','5 hours','8 hours','A full day'],a:0},
+  {q:'Which helpline is for consumer grievances in India?',o:['100','1915','1090','108'],a:1}
+];
+let qi=0,score=0,answered=false;
+const qbox=document.getElementById('quizBox');
+function renderQuiz(){
+  answered=false;
+  const item=quiz[qi];
+  qbox.innerHTML=`<div class="qbar"><i style="width:${qi/quiz.length*100}%"></i></div>
+    <div class="qmeta"><span>Question ${qi+1} of ${quiz.length}</span><span>Score ${score}</span></div>
+    <div class="qq">${item.q}</div>
+    <div id="qopts"></div>`;
+  const wrap=qbox.querySelector('#qopts');
+  item.o.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='qopt';b.textContent=opt;
+    b.onclick=()=>{
+      if(answered)return;answered=true;
+      const opts=[...wrap.children];
+      if(i===item.a){b.classList.add('correct');score++;}
+      else{b.classList.add('wrong');opts[item.a].classList.add('correct');}
+      setTimeout(()=>{qi++;qi<quiz.length?renderQuiz():renderResult();},900);
+    };
+    wrap.appendChild(b);
+  });
+}
+function renderResult(){
+  const pct=Math.round(score/quiz.length*100);
+  let msg=pct>=80?'Food Safety Champion! 🏆':pct>=50?'Good — keep learning! 👍':'Worth a re-read of the sections above. 📚';
+  qbox.innerHTML=`<div class="qresult"><div class="score">${score}/${quiz.length}</div><h3 style="font-family:Fraunces;margin:6px 0 4px">${pct}%</h3><p style="color:var(--ink-soft);margin-bottom:20px">${msg}</p><button class="btn btn-primary" id="retry">Try Again</button></div>`;
+  document.getElementById('retry').onclick=()=>{qi=0;score=0;renderQuiz();};
+  if(pct>=50)burstConfetti();
+}
+function burstConfetti(){
+  const colors=['#16A34A','#22C55E','#FACC15','#EF4444','#3B82F6'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.background=colors[Math.random()*colors.length|0];
+    c.style.animationDuration=(2+Math.random()*2)+'s';
+    c.style.animationDelay=(Math.random()*.5)+'s';
+    c.style.transform=`rotate(${Math.random()*360}deg)`;
+    qbox.appendChild(c);setTimeout(()=>c.remove(),4200);
+  }
+}
+renderQuiz();
+
+
+/* ---------- blog ---------- */
+const posts=[
+ {e:'🥛',c:'Adulteration',t:'The 30-second milk purity test every home should know',x:'Slant-surface, iodine and boil tests explained step by step.',d:'Jun 2026',r:'4 min'},
+ {e:'🏷️',c:'Labels',t:'5 tricks brands use on nutrition labels',x:'Serving-size games, hidden sugars and health-halo words.',d:'Jun 2026',r:'5 min'},
+ {e:'🌶️',c:'Adulteration',t:'Brick powder in chilli powder: how common is it?',x:'What surveillance data shows and how to check at home.',d:'May 2026',r:'3 min'},
+ {e:'🍱',c:'Hygiene',t:'Tiffin safety: keeping packed lunch safe till 2 PM',x:'The danger zone problem and how to pack around it.',d:'May 2026',r:'4 min'},
+ {e:'🥦',c:'Nutrition',t:'Millets 101: why they are back on the Indian plate',x:'Nutrition profile, cooking basics and label claims.',d:'May 2026',r:'6 min'},
+ {e:'⚖️',c:'Rights',t:'How to file a food complaint that actually gets acted on',x:'Evidence, FSSAI portals and escalation paths.',d:'Apr 2026',r:'5 min'},
+ {e:'🍯',c:'Adulteration',t:'Honey fraud: syrup blends and how tests catch them',x:'Why home tests are indicators, and what labs measure.',d:'Apr 2026',r:'5 min'},
+ {e:'🧊',c:'Hygiene',t:'Your fridge is a map: what goes where and why',x:'Shelf-by-shelf storage logic that prevents spoilage.',d:'Apr 2026',r:'3 min'},
+ {e:'🍬',c:'Nutrition',t:'Added sugar has 15 names. Here they all are',x:'Spotting maltose, dextrose and syrup aliases on packs.',d:'Mar 2026',r:'4 min'}
+];
+const PER=6;let bCat='All',bQuery='',bPage=1;
+const bGrid=document.getElementById('blogGrid'),bPager=document.getElementById('blogPager'),bCats=document.getElementById('blogCats');
+['All','Adulteration','Labels','Nutrition','Hygiene','Rights'].forEach(c=>{
+  const b=document.createElement('button');b.textContent=c;if(c==='All')b.classList.add('on');
+  b.onclick=()=>{bCat=c;bPage=1;[...bCats.children].forEach(x=>x.classList.toggle('on',x===b));renderBlog();};
+  bCats.appendChild(b);
+});
+document.getElementById('blogSearch').addEventListener('input',e=>{bQuery=e.target.value.toLowerCase();bPage=1;renderBlog();});
+function renderBlog(){
+  const list=posts.filter(p=>(bCat==='All'||p.c===bCat)&&(p.t+p.x).toLowerCase().includes(bQuery));
+  const pages=Math.max(1,Math.ceil(list.length/PER));if(bPage>pages)bPage=pages;
+  const slice=list.slice((bPage-1)*PER,bPage*PER);
+  bGrid.innerHTML=slice.length?slice.map(p=>`<article class="card blog-card"><div class="bimg">${p.e}</div><span class="bcat">${p.c}</span><h3>${p.t}</h3><p>${p.x}</p><div class="bmeta">${p.d} · ${p.r} read</div></article>`).join(''):'<div class="no-results">No articles match your search. 🌱</div>';
+  bPager.innerHTML='';
+  if(pages>1)for(let i=1;i<=pages;i++){const b=document.createElement('button');b.textContent=i;if(i===bPage)b.classList.add('on');b.onclick=()=>{bPage=i;renderBlog();document.getElementById('blog').scrollIntoView({behavior:'smooth'});};bPager.appendChild(b);}
+}
+renderBlog();
+
+/* ---------- resources downloads ---------- */
+const resources={
+ hygiene:{f:'Kitchen-Hygiene-Checklist.txt',c:`SAFETHALI — KITCHEN HYGIENE CHECKLIST\n\nDAILY\n[ ] Wash hands 20 sec before cooking & after raw meat\n[ ] Separate boards for raw and cooked food\n[ ] Wipe counters with hot soapy water\n[ ] Refrigerate leftovers within 1-2 hours\n[ ] Cover all stored food\n\nWEEKLY\n[ ] Deep-clean fridge shelves\n[ ] Replace/boil kitchen sponge\n[ ] Check expiry dates in the pantry\n[ ] Clean chimney/stove grease\n\nMONTHLY\n[ ] Discard worn chopping boards with deep grooves\n[ ] Descale water filter as per schedule\n\nsafethali.in — screening guidance, not a substitute for professional advice`},
+ tests:{f:'Home-Adulteration-Test-Card.txt',c:`SAFETHALI — HOME ADULTERATION TEST CARD\n(Quick screening indicators, not lab confirmation)\n\nMILK: Drop on slanted surface — pure milk flows slowly, leaves white trail. Iodine drop turns blue = starch.\nTURMERIC: Pinch in water — settles quietly if pure. Lemon/acid drop turning pink-violet = synthetic dye.\nHONEY: Cotton bud dipped in honey should burn; moisture-heavy honey crackles or fails.\nTEA: Rub leaves on wet white paper — instant colour stain = artificial dye.\nCOFFEE: Sprinkle on water — pure floats; chicory sinks with colour streaks.\nCHILLI POWDER: Sprinkle on water — gritty settled residue = brick powder.\nMUSTARD OIL: Nitric acid + shake — reddish brown = argemone (get it lab tested!).\nGHEE: HCl + sugar in melted ghee — crimson lower layer = vanaspati.\nBLACK PEPPER: Drop in water — pure sinks, papaya seeds float.\n\nFailed a test? Stop using the product and report on FSSAI Food Safety Connect.`},
+ fridge:{f:'Fridge-Storage-Guide.txt',c:`SAFETHALI — FRIDGE STORAGE GUIDE\n\nTOP SHELF (coldest stable): leftovers, ready-to-eat, dairy desserts\nMIDDLE: milk, curd, paneer, eggs (not the door!)\nBOTTOM SHELF: raw meat & fish, sealed, so drips never fall on other food\nCRISPER DRAWER: vegetables & fruit (keep separate if possible)\nDOOR (warmest): condiments, pickles, juices only\n\nTIMES (refrigerated)\nCooked rice: 1 day | Cooked dal/sabzi: 2 days | Raw chicken/fish: 1-2 days\nMilk after opening: 2-3 days | Leftover gravies: 2 days, reheat once only\n\nRULE: 2-hour limit at room temp (1 hour in summer) before refrigeration.`},
+ label:{f:'Label-Reading-Cheat-Sheet.txt',c:`SAFETHALI — LABEL READING CHEAT SHEET\n\nBEFORE BUYING, CHECK 6 THINGS:\n1. VEG/NON-VEG MARK — green dot = veg, brown = non-veg (legally required)\n2. FSSAI NUMBER — 14 digits; verify on FoSCoS portal if suspicious\n3. INGREDIENTS — listed by weight; first item = biggest component\n4. ADDED SUGAR ALIASES — maltose, dextrose, corn syrup, juice concentrate\n5. NUTRITION PER 100g — compare brands on per-100g, never per-serving\n6. DATES — Use-by = safety limit. Best-before = quality only. Check batch no.\n\nRED FLAGS: no FSSAI number, no batch number, unreadable dates, \"proprietary food\" with no ingredient detail.`}
+};
+document.querySelectorAll('.res-btn').forEach(b=>b.onclick=()=>{
+  const r=resources[b.dataset.res];
+  const blob=new Blob([r.c],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=r.f;a.click();URL.revokeObjectURL(a.href);
+  b.textContent='Downloaded ✓';setTimeout(()=>b.textContent='Download',2200);
+});
+
+/* ---------- awareness pulse ---------- */
+const regions=[
+ {e:'🏔️',n:'North India',v:'Milk & dairy purity',p:'Milk adulteration (water, starch, urea) dominates concern here — the region has India\u2019s highest dairy consumption. The slant-surface and iodine tests are the most searched checks.'},
+ {e:'🌴',n:'South India',v:'Spice & oil purity',p:'Turmeric, chilli and cooking-oil quality lead the concerns. Coastal states also focus on fish freshness and ice quality in markets.'},
+ {e:'🌇',n:'West & Metro',v:'Packaged food labels',p:'Label literacy is the big theme — hidden sugars, per-serving tricks and \u201chealth-halo\u201d marketing. High packaged-food consumption drives it.'},
+ {e:'🌾',n:'East & North-East',v:'Street food & storage',p:'Street-food hygiene, safe water and monsoon-season storage top the list. Tea purity is a special focus in tea-growing states.'}
+];
+const pMap=document.getElementById('pulseMap'),pPanel=document.getElementById('pulsePanel');
+regions.forEach((r,i)=>{
+  const b=document.createElement('button');
+  b.innerHTML=`<span class="pe">${r.e}</span><b>${r.n}</b><span class="pv">${r.v}</span>`;
+  b.onclick=()=>{[...pMap.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');
+    pPanel.innerHTML=`<span class="tag">${r.v}</span><h3>${r.n}</h3><p>${r.p}</p>`;
+    pPanel.style.animation='none';pPanel.offsetHeight;pPanel.style.animation='fadeup .5s';};
+  pMap.appendChild(b);
+});
+
+/* ---------- hero particles ---------- */
+const cv=document.getElementById('particles'),cx=cv.getContext('2d');
+let W,H,parts;
+function initP(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;parts=[...Array(46)].map(()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.5+1,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4}));}
+function drawP(){cx.clearRect(0,0,W,H);cx.fillStyle='rgba(34,197,94,.4)';parts.forEach(p=>{p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>W)p.dx*=-1;if(p.y<0||p.y>H)p.dy*=-1;cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill();});requestAnimationFrame(drawP);}
+if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){initP();drawP();window.addEventListener('resize',initP);}
+</script>
+</body>
+</html>
